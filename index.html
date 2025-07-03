@@ -76,14 +76,88 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23000" width="1200" height="600"/><path fill="%23FFD700" opacity="0.2" d="M0 400c200-50 400-50 600 0s400 50 600 0v200H0z"/></svg>');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
             display: flex;
+            min-height: 100vh;
             align-items: center;
-            text-align: center;
-            color: white;
+            background: #FFD700;
+            padding: 100px 0 50px 0;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .hero-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
         }
 
         .hero-content h1 {
@@ -100,93 +174,217 @@
             margin-right: auto;
         }
 
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        /* Booking Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-            color: #000;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .service-card {
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            padding: 2.5rem;
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 3rem;
             border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            border: 1px solid #e0e0e0;
+            margin-bottom: 2rem;
         }
 
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        .modal-header h2 {
+            color: #333;
+            margin-bottom: 1rem;
         }
 
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
             color: #FFD700;
         }
 
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .booking-options {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .booking-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .booking-option:hover {
+            border-color: #FFD700;
+            background: #fffef0;
+            transform: translateY(-2px);
+        }
+
+        .booking-icon {
+            font-size: 2rem;
+            color: #FFD700;
+        }
+
+        .booking-text h3 {
+            margin-bottom: 0.5rem;
             color: #333;
         }
 
-        .service-card p {
+        .booking-text p {
             color: #444;
+            margin: 0;
+        }
+
+        /* Services Individual Sections */
+        .service-section {
+            display: flex;
+            min-height: 70vh;
+            align-items: center;
+            padding: 80px 0;
+        }
+
+        .service-section:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .service-section:nth-child(odd) {
+            background: white;
+        }
+
+        .service-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .service-layout.reverse {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .service-layout.reverse .service-image {
+            order: 2;
+        }
+
+        .service-layout.reverse .service-content {
+            order: 1;
+        }
+
+        .service-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .service-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .service-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
             margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .service-content p {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
 
         .service-features {
             list-style: none;
-            text-align: left;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
+            padding: 0;
         }
 
         .service-features li {
-            padding: 0.3rem 0;
+            padding: 0.5rem 0;
             color: #333;
+            display: flex;
+            align-items: center;
         }
 
         .service-features li:before {
             content: "✓";
             color: #FFD700;
             font-weight: bold;
-            margin-right: 0.5rem;
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .service-cta {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            margin-top: 1rem;
+        }
+
+        .service-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
         }
 
         /* About Section */
@@ -363,25 +561,43 @@
                 display: block;
             }
 
-            .hero-content h1 {
-                font-size: 2.5rem;
+            .hero-layout, .service-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 0 1rem;
             }
 
-            .hero-content p {
-                font-size: 1.1rem;
+            .service-layout.reverse .service-image,
+            .service-layout.reverse .service-content {
+                order: unset;
+            }
+
+            .hero-content, .service-content {
+                padding: 2rem;
+            }
+
+            .hero-content h1, .service-content h2 {
+                font-size: 2rem;
             }
 
             .about-content {
                 grid-template-columns: 1fr;
             }
 
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
             .booking-buttons {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                padding: 2rem;
+                width: 95%;
+            }
+
+            .service-section {
+                min-height: auto;
+                padding: 60px 0;
             }
         }
 
@@ -412,60 +628,114 @@
     </header>
 
     <section id="home" class="hero">
-        <div class="container">
+        <div class="hero-layout">
+            <div class="hero-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'%3E%3Crect fill='%23333' width='800' height='500'/%3E%3Cpath fill='%23FFD700' opacity='0.3' d='M100 200h600v100H100z'/%3E%3Ctext x='400' y='250' fill='white' font-size='24' text-anchor='middle' font-family='Arial'%3EYour Vehicle Photo Here%3C/text%3E%3C/svg%3E" alt="Professional Auto Interior Work" />
+            </div>
             <div class="hero-content">
-                <h1>Yellow Jacket Interiors</h1>
-                <p>Expert interior restoration, bedliner installation, and autobody respray services with over 20 years of experience</p>
-                <a href="#booking" class="cta-button">Book Your Service Today</a>
+                <div class="hero-badge">DEALERSHIP SERVICES</div>
+                <h1>Add Value to each Deal</h1>
+                <p>We are car interior specialists! If you want it done right, bring it to Yellow Jacket! Our shop has been entrusted to provide quick but thoroughly seamless repairs by 32 car and truck dealers, 15 collision shops and 3 RV dealers on southern Vancouver Island. Our team of mobile and in house technicians perform over 300 repairs on automobiles alone each month for our retailers. Which means, when you call us for your interior you can be sure it will be done with expertise and to the highest standards.</p>
+                <button class="hero-cta" onclick="openBookingModal()">Book Now</button>
             </div>
         </div>
     </section>
 
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">Our Premium Services</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🪑</div>
-                    <h3>Interior Restoration</h3>
-                    <p>Complete automotive interior restoration bringing your vehicle's cabin back to life</p>
-                    <ul class="service-features">
-                        <li>Leather seat repair & reconditioning</li>
-                        <li>Dashboard restoration</li>
-                        <li>Carpet cleaning & replacement</li>
-                        <li>Door panel restoration</li>
-                        <li>Headliner replacement</li>
-                    </ul>
-                    <a href="#booking" class="cta-button">Book Interior Service</a>
-                </div>
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <div class="modal-header">
+                <h2>Book Your Service</h2>
+                <p>Choose your preferred way to schedule an appointment</p>
+            </div>
+            <div class="booking-options">
+                <a href="https://calendar.google.com/calendar/appointments/AcZssZ1234567890" class="booking-option" target="_blank">
+                    <div class="booking-icon">📅</div>
+                    <div class="booking-text">
+                        <h3>Online Booking</h3>
+                        <p>Schedule instantly with our online calendar</p>
+                    </div>
+                </a>
+                <a href="tel:+1234567890" class="booking-option">
+                    <div class="booking-icon">📞</div>
+                    <div class="booking-text">
+                        <h3>Call to Schedule</h3>
+                        <p>Speak directly with our team: (123) 456-7890</p>
+                    </div>
+                </a>
+                <a href="mailto:info@yellowjacketinteriors.com?subject=Service Booking Request" class="booking-option">
+                    <div class="booking-icon">✉️</div>
+                    <div class="booking-text">
+                        <h3>Email Request</h3>
+                        <p>Send us your details and we'll get back to you</p>
+                    </div>
+                </a>
+                <a href="sms:+1234567890?body=Hi, I'd like to book a service appointment" class="booking-option">
+                    <div class="booking-icon">💬</div>
+                    <div class="booking-text">
+                        <h3>Text Message</h3>
+                        <p>Quick and easy text booking</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 
-                <div class="service-card">
-                    <div class="service-icon">🛡️</div>
-                    <h3>Bedliner Installation</h3>
-                    <p>Durable truck bed protection with professional spray-on and drop-in bedliner options</p>
-                    <ul class="service-features">
-                        <li>Spray-on bedliner application</li>
-                        <li>Drop-in bedliner installation</li>
-                        <li>Surface preparation & masking</li>
-                        <li>Custom color options</li>
-                        <li>Lifetime warranty available</li>
-                    </ul>
-                    <a href="#booking" class="cta-button">Book Bedliner Service</a>
-                </div>
+    <!-- Individual Service Sections -->
+    <section class="service-section">
+        <div class="service-layout">
+            <div class="service-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Crect fill='%23222' width='800' height='400'/%3E%3Cpath fill='%238B4513' d='M200 150h400v100H200z'/%3E%3Ctext x='400' y='210' fill='white' font-size='20' text-anchor='middle' font-family='Arial'%3ECar Interior Work%3C/text%3E%3C/svg%3E" alt="Interior Restoration Work" />
+            </div>
+            <div class="service-content">
+                <div class="service-badge">Interior Restoration</div>
+                <h2>Complete Automotive Interior Restoration</h2>
+                <p>Bringing your vehicle's cabin back to life with expert craftsmanship and attention to detail. From luxury cars to work trucks, we restore interiors to like-new condition.</p>
+                <ul class="service-features">
+                    <li>Leather seat repair & reconditioning</li>
+                    <li>Dashboard restoration</li>
+                    <li>Carpet cleaning & replacement</li>
+                    <li>Door panel restoration</li>
+                    <li>Headliner replacement</li>
+                </ul>
+                <button class="service-cta" onclick="openBookingModal()">Book Interior Service</button>
+            </div>
+        </div>
+    </section>
 
-                <div class="service-card">
-                    <div class="service-icon">🎨</div>
-                    <h3>Autobody Respray</h3>
-                    <p>Professional paint jobs and color matching for complete vehicle transformation</p>
-                    <ul class="service-features">
-                        <li>Complete vehicle repainting</li>
-                        <li>Color matching & custom colors</li>
-                        <li>Primer & base coat application</li>
-                        <li>Clear coat protection</li>
-                        <li>Rust treatment & prevention</li>
-                    </ul>
-                    <a href="#booking" class="cta-button">Book Paint Service</a>
-                </div>
+    <section class="service-section">
+        <div class="service-layout reverse">
+            <div class="service-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Crect fill='%23333' width='800' height='400'/%3E%3Crect fill='%23000' x='100' y='150' width='600' height='100'/%3E%3Ctext x='400' y='210' fill='white' font-size='20' text-anchor='middle' font-family='Arial'%3ETruck Bed Liner%3C/text%3E%3C/svg%3E" alt="Bedliner Installation" />
+            </div>
+            <div class="service-content">
+                <div class="service-badge">Spray In Truck Bed Liners</div>
+                <h2>Treat your truck with Respect. Protect it!</h2>
+                <p>Durable truck bed protection with professional spray-on and drop-in bedliner options. Protect your investment with our premium coating solutions.</p>
+                <ul class="service-features">
+                    <li>Spray in Truck Bed Liners</li>
+                    <li>Exterior performance coatings on Jeeps, trailers and anything you can imagine!</li>
+                    <li>Floor coverings in fishing boats and Zodiac boats</li>
+                    <li>Boat ramp covering</li>
+                    <li>Rocker Panel and Wheel Wells</li>
+                    <li>RV Roofs</li>
+                </ul>
+                <button class="service-cta" onclick="openBookingModal()">More About Yellow Jacket Truck Bed Liners</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-section">
+        <div class="service-layout">
+            <div class="service-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Crect fill='%23000' width='800' height='400'/%3E%3Cpath fill='%23silver' d='M150 100h500c20 0 40 20 40 40v120c0 20-20 40-40 40H150c-20 0-40-20-40-40V140c0-20 20-40 40-40z'/%3E%3Ctext x='400' y='210' fill='black' font-size='18' text-anchor='middle' font-family='Arial'%3EClassic Car Paint%3C/text%3E%3C/svg%3E" alt="Auto Body Respray" />
+            </div>
+            <div class="service-content">
+                <div class="service-badge">Auto Interior Restorations</div>
+                <h2>Trusted Experts</h2>
+                <p>Housing costs have skyrocketed! Purchasing a new car may not be high on your priority list, but you still want to look and feel as cool as you know you are when you are out cruising. But, there's a tear on the driver's seat and a scratch on the glove box you hadn't noticed before. That is what we are here for. Check out this list of services we provide, something might be right for you.</p>
+                <button class="service-cta" onclick="openBookingModal()">Services</button>
             </div>
         </div>
     </section>
@@ -568,12 +838,46 @@
                 </div>
             </div>
             <div style="border-top: 1px solid #333; padding-top: 2rem; margin-top: 2rem;">
-                <p>&copy; 2025 Elite Auto Restoration. All rights reserved.</p>
+                <p>&copy; 2025 Yellow Jacket Interiors. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Booking Modal Functions
+        function openBookingModal() {
+            document.getElementById('bookingModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                closeBookingModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeBookingModal();
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
