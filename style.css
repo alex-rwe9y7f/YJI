@@ -441,6 +441,34 @@ footer {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
+    /* at your mobile breakpoint… */
+@media (max-width: 480px) {
+  header {
+    /* give it more breathing room */
+    padding: 1.5rem 0;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;       /* allow items to wrap onto a new row */
+    align-items: center;   /* re-center on the larger header */
+  }
+
+  .logo {
+    flex: 1 1 100%;        /* force the logo to take its own row */
+    white-space: normal;   /* allow it to break onto two lines */
+    margin-bottom: 0.5rem; /* spacing between logo and menu button */
+    font-size: 1.5rem;     /* you can tweak this too */
+    line-height: 1.2;
+  }
+
+  .mobile-menu {
+    flex: 0 0 auto;        /* keep your hamburger button on its own line */
+  }
+}
+    
+    
+    
     .nav-links {
         display: none; /* Hide desktop nav */
     }
