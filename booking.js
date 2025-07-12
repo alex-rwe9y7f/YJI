@@ -9,13 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateSelectionElement = document.getElementById('date-selection');
     const timeSelectionElement = document.getElementById('time-selection');
     const statusMessageElement = document.getElementById('status-message');
+    const availabilityStatusElement = document.getElementById('availability-status');
     const submitButton = bookingForm.querySelector('button[type="submit"]');
 
     // --- SERVICE DURATION CONFIGURATION ---
     const serviceDurations = {
-        'Interior': 4, // 4 hours
-        'Bedliner': 8, // 8 hours (full day)
-        'Body': 8,     // 8 hours (full day)
+        'Interior': 4,
+        'Bedliner': 8,
+        'Body': 8,
     };
 
     // --- INITIALIZE FLATPICKR DATE PICKER ---
@@ -23,17 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
         minDate: 'today',
         dateFormat: "Y-m-d",
         "disableMobile": true,
-        // Trigger availability check when the date changes
+        // --- NEW: Disable weekends (Saturday=6, Sunday=0) ---
+        "disable": [
+            function(date) {
+                // Return true to disable weekends
+                return (date.getDay() === 0 || date.getDay() === 6);
+            }
+        ],
         onChange: () => debouncedCheckAvailability(),
     });
 
-    /**
-     * Utility to limit how often a function is executed.
-     * This prevents sending too many requests to the server while the user is interacting with the form.
-     * @param {Function} func The function to debounce.
-     * @param {number} delay The delay in milliseconds.
-     * @returns {Function} The debounced function.
-     */
     const debounce = (func, delay) => {
         let timeoutId;
         return (...args) => {
@@ -45,73 +45,88 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Checks the Google Calendar in real-time to see if the selected slot is available.
+     * Checks for weekend/same-day booking attempts and calendar availability.
      */
     const checkAvailability = async () => {
-        const service = serviceTypeElement.value;
-        const selectedDate = dateSelectionElement.value;
-        const selectedTime = timeSelectionElement.value;
+        // Clear previous statuses
+        availabilityStatusElement.textContent = '';
+        availabilityStatusElement.className = 'availability-status';
+        statusMessageElement.textContent = '';
+        statusMessageElement.className = 'message';
 
-        // Don't run the check if the form is incomplete
-        if (!service || !selectedDate || !selectedTime) {
-            statusMessageElement.textContent = '';
-            statusMessageElement.className = 'message';
-            submitButton.disabled = false; // Keep button enabled until a conflict is confirmed
+        const service = serviceTypeElement.value;
+        const selectedDateStr = dateSelectionElement.value;
+        const selectedTime = timeSelectionElement.value;
+        
+        // --- WEEKEND & SAME-DAY BOOKING CHECKS ---
+        if (selectedDateStr) {
+            const selectedDate = new Date(selectedDateStr + 'T00:00:00'); // Use T00:00:00 to avoid timezone issues
+            const day = selectedDate.getDay();
+
+            if (day === 0 || day === 6) {
+                statusMessageElement.textContent = 'For weekend availability, please call or text 250-580-5207.';
+                statusMessageElement.className = 'message error';
+                submitButton.disabled = true;
+                return;
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize today's date
+
+            if (selectedDate.getTime() === today.getTime()) {
+                statusMessageElement.textContent = 'Please call or text 250-580-5207 for same-day bookings.';
+                statusMessageElement.className = 'message error';
+                submitButton.disabled = true;
+                return;
+            }
+        }
+
+        if (!service || !selectedDateStr || !selectedTime) {
+            submitButton.disabled = false;
             return;
         }
 
-        // Provide immediate feedback to the user that we are checking
-        statusMessageElement.textContent = 'Checking availability...';
-        statusMessageElement.className = 'message';
-        submitButton.disabled = true; // Disable button during check
+        // --- REAL-TIME AVAILABILITY CHECK ---
+        availabilityStatusElement.textContent = 'Checking...';
+        submitButton.disabled = true;
 
-        // Construct the start and end times for the potential booking
-        const startTime = new Date(`${selectedDate}T${selectedTime}:00`);
+        const startTime = new Date(`${selectedDateStr}T${selectedTime}:00`);
         const serviceDuration = serviceDurations[service];
         const endTime = new Date(startTime);
         endTime.setHours(startTime.getHours() + serviceDuration);
 
         try {
-            // Fetch all events for the selected day from the server
             const response = await fetch(`/.netlify/functions/server/get-events?date=${startTime.toISOString()}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch calendar data from the server.');
-            }
+            if (!response.ok) throw new Error('Failed to fetch calendar data.');
             
             const events = await response.json();
 
-            // Check if any existing event overlaps with the requested time slot
             const isConflict = events.some(event => {
                 const eventStart = new Date(event.start.dateTime);
                 const eventEnd = new Date(event.end.dateTime);
-                // The logic for an overlap is: (StartA < EndB) and (EndA > StartB)
                 return startTime < eventEnd && endTime > eventStart;
             });
 
-            // Update the UI based on whether a conflict was found
             if (isConflict) {
-                statusMessageElement.textContent = 'This time slot is already booked. Please choose another time or date.';
-                statusMessageElement.className = 'message error';
-                submitButton.disabled = true; // Keep button disabled
+                availabilityStatusElement.textContent = 'Not Available';
+                availabilityStatusElement.className = 'availability-status unavailable';
+                submitButton.disabled = true;
             } else {
-                statusMessageElement.textContent = 'This time slot is available!';
-                statusMessageElement.className = 'message success';
-                submitButton.disabled = false; // Re-enable the button
+                availabilityStatusElement.textContent = 'Available';
+                availabilityStatusElement.className = 'availability-status available';
+                submitButton.disabled = false;
             }
         } catch (error) {
             console.error('Availability check error:', error);
             statusMessageElement.textContent = 'Could not verify availability. Please try again.';
             statusMessageElement.className = 'message error';
-            // Allow user to try submitting anyway in case of a temporary network issue
             submitButton.disabled = false;
         }
     };
 
-    // Create a debounced version of the check function to avoid excessive API calls
     const debouncedCheckAvailability = debounce(checkAvailability, 500);
 
     // --- ATTACH EVENT LISTENERS ---
-    // Check availability when the service or time selection changes
     serviceTypeElement.addEventListener('change', debouncedCheckAvailability);
     timeSelectionElement.addEventListener('change', debouncedCheckAvailability);
 
@@ -119,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     bookingForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         
-        // Final validation before submitting
         const service = serviceTypeElement.value;
         const selectedDate = dateSelectionElement.value;
         const selectedTime = timeSelectionElement.value;
@@ -130,15 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        statusMessageElement.textContent = 'Submitting your booking...';
+        statusMessageElement.className = 'message';
+        submitButton.disabled = true;
+
         const startTime = new Date(`${selectedDate}T${selectedTime}:00`);
         const serviceDuration = serviceDurations[service];
         const endTime = new Date(startTime);
         endTime.setHours(startTime.getHours() + serviceDuration);
-
-        // Show submitting status
-        statusMessageElement.textContent = 'Submitting your booking...';
-        statusMessageElement.className = 'message';
-        submitButton.disabled = true;
 
         try {
             const response = await fetch('/.netlify/functions/server/create-event', {
@@ -158,29 +171,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusMessageElement.className = 'message success';
                 bookingForm.reset();
                 fp.clear();
+                availabilityStatusElement.textContent = '';
             } else {
                 statusMessageElement.textContent = `Error: ${data.message}`;
                 statusMessageElement.className = 'message error';
-                if (data.conflict) {
-                    sendConflictEmail(data.conflict);
-                }
+                if (data.conflict) sendConflictEmail(data.conflict);
             }
         } catch (error) {
             console.error('Booking submission error:', error);
             statusMessageElement.textContent = 'A network error occurred. Please try again later.';
             statusMessageElement.className = 'message error';
         } finally {
-            // Re-enable button after submission attempt unless successful
             if (statusMessageElement.className.includes('error')) {
                 submitButton.disabled = false;
             }
         }
     });
 
-    /**
-     * Sends an email notification about a booking conflict (optional).
-     * @param {object} conflictDetails - The details of the conflict from the server.
-     */
     async function sendConflictEmail(conflictDetails) {
         try {
             await fetch('/.netlify/functions/server/send-conflict-email', {
