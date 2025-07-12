@@ -86,6 +86,30 @@
             <div id="status-message" class="message" style="margin-top: 20px;"></div>
         </div>
     </section>
+  </div>
+
+  <!-- NEW: Success Modal -->
+  <div id="success-modal-overlay" class="modal-overlay">
+    <div id="success-modal" class="modal">
+      <div class="modal-header">
+        <h2>Booking Request Sent!</h2>
+        <button id="close-success-modal" class="close-modal-button" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-content">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <p>Your appointment request has been successfully submitted. We will contact you shortly to confirm the details.</p>
+        <div class="booking-summary">
+          <h4>Your Requested Appointment:</h4>
+          <p><strong>Service:</strong> <span id="summary-service"></span></p>
+          <p><strong>Date:</strong> <span id="summary-date"></span></p>
+          <p><strong>Time:</strong> <span id="summary-time"></span></p>
+        </div>
+        <button id="new-booking-button" class="btn btn-primary">Book Another Appointment</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="booking.js"></script>

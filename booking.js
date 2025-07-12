@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- CACHE DOM ELEMENTS ---
     const bookingForm = document.getElementById('booking-form');
     if (!bookingForm) {
-        // If the form is not on this page, do nothing.
         return;
     }
     const serviceTypeElement = document.getElementById('service-type');
@@ -11,6 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessageElement = document.getElementById('status-message');
     const availabilityStatusElement = document.getElementById('availability-status');
     const submitButton = bookingForm.querySelector('button[type="submit"]');
+
+    // --- SUCCESS MODAL ELEMENTS ---
+    const successModalOverlay = document.getElementById('success-modal-overlay');
+    const closeSuccessModalBtn = document.getElementById('close-success-modal');
+    const newBookingBtn = document.getElementById('new-booking-button');
+    const summaryService = document.getElementById('summary-service');
+    const summaryDate = document.getElementById('summary-date');
+    const summaryTime = document.getElementById('summary-time');
 
     // --- SERVICE DURATION CONFIGURATION ---
     const serviceDurations = {
@@ -24,10 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         minDate: 'today',
         dateFormat: "Y-m-d",
         "disableMobile": true,
-        // --- NEW: Disable weekends (Saturday=6, Sunday=0) ---
         "disable": [
             function(date) {
-                // Return true to disable weekends
                 return (date.getDay() === 0 || date.getDay() === 6);
             }
         ],
@@ -44,11 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    /**
-     * Checks for weekend/same-day booking attempts and calendar availability.
-     */
     const checkAvailability = async () => {
-        // Clear previous statuses
         availabilityStatusElement.textContent = '';
         availabilityStatusElement.className = 'availability-status';
         statusMessageElement.textContent = '';
@@ -58,9 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedDateStr = dateSelectionElement.value;
         const selectedTime = timeSelectionElement.value;
         
-        // --- WEEKEND & SAME-DAY BOOKING CHECKS ---
         if (selectedDateStr) {
-            const selectedDate = new Date(selectedDateStr + 'T00:00:00'); // Use T00:00:00 to avoid timezone issues
+            const selectedDate = new Date(selectedDateStr + 'T00:00:00');
             const day = selectedDate.getDay();
 
             if (day === 0 || day === 6) {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Normalize today's date
+            today.setHours(0, 0, 0, 0);
 
             if (selectedDate.getTime() === today.getTime()) {
                 statusMessageElement.textContent = 'Please call or text 250-580-5207 for same-day bookings.';
@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- REAL-TIME AVAILABILITY CHECK ---
         availabilityStatusElement.textContent = 'Checking...';
         submitButton.disabled = true;
 
@@ -100,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Failed to fetch calendar data.');
             
             const events = await response.json();
-
             const isConflict = events.some(event => {
                 const eventStart = new Date(event.start.dateTime);
                 const eventEnd = new Date(event.end.dateTime);
@@ -126,11 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const debouncedCheckAvailability = debounce(checkAvailability, 500);
 
-    // --- ATTACH EVENT LISTENERS ---
     serviceTypeElement.addEventListener('change', debouncedCheckAvailability);
     timeSelectionElement.addEventListener('change', debouncedCheckAvailability);
 
-    // --- FORM SUBMISSION EVENT LISTENER ---
     bookingForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         
@@ -167,24 +163,47 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                statusMessageElement.textContent = 'Booking request successful! We will contact you shortly to confirm.';
-                statusMessageElement.className = 'message success';
-                bookingForm.reset();
-                fp.clear();
-                availabilityStatusElement.textContent = '';
+                // --- SHOW SUCCESS MODAL ---
+                const selectedServiceText = serviceTypeElement.options[serviceTypeElement.selectedIndex].text;
+                const formattedDate = new Date(startTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const formattedTime = new Date(startTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+                summaryService.textContent = selectedServiceText;
+                summaryDate.textContent = formattedDate;
+                summaryTime.textContent = formattedTime;
+
+                successModalOverlay.classList.add('active');
+                bookingForm.style.display = 'none'; // Hide form after successful booking
+                statusMessageElement.style.display = 'none';
+
             } else {
                 statusMessageElement.textContent = `Error: ${data.message}`;
                 statusMessageElement.className = 'message error';
                 if (data.conflict) sendConflictEmail(data.conflict);
+                submitButton.disabled = false;
             }
         } catch (error) {
             console.error('Booking submission error:', error);
             statusMessageElement.textContent = 'A network error occurred. Please try again later.';
             statusMessageElement.className = 'message error';
-        } finally {
-            if (statusMessageElement.className.includes('error')) {
-                submitButton.disabled = false;
-            }
+            submitButton.disabled = false;
+        }
+    });
+
+    function closeAndReset() {
+        successModalOverlay.classList.remove('active');
+        bookingForm.reset();
+        fp.clear();
+        availabilityStatusElement.textContent = '';
+        bookingForm.style.display = 'block'; // Show the form again
+        submitButton.disabled = false;
+    }
+
+    closeSuccessModalBtn.addEventListener('click', closeAndReset);
+    newBookingBtn.addEventListener('click', closeAndReset);
+    successModalOverlay.addEventListener('click', (e) => {
+        if (e.target === successModalOverlay) {
+            closeAndReset();
         }
     });
 
