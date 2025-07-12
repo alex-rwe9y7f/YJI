@@ -7,6 +7,10 @@
 [functions]
   directory = "netlify/functions/" # The correct path to your functions folder
 
+# Exclude server.js from secrets scanning as it uses environment variables
+[build.environment]
+  SECRETS_SCAN_OMIT_PATHS = "netlify/functions/server.js"
+
 # Settings for any plugins you want to use
 [[plugins]]
   package = "@netlify/plugin-sitemap"

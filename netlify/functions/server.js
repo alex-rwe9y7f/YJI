@@ -39,8 +39,8 @@ app.get('/.netlify/functions/server/get-events', async (req, res) => {
         });
         res.json(response.data.items);
     } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).json({ message: 'Failed to fetch events' });
+        console.error('Error fetching events:', error.message);
+        res.status(500).json({ message: 'Failed to fetch events', error: error.message });
     }
 });
 
@@ -71,8 +71,8 @@ app.post('/.netlify/functions/server/create-event', async (req, res) => {
         const response = await calendar.events.insert({ calendarId: 'primary', resource: event });
         res.status(200).json({ message: 'Event created successfully', event: response.data });
     } catch (error) {
-        console.error('Error creating event:', error);
-        res.status(500).json({ message: 'Failed to create event' });
+        console.error('Error creating event:', error.message);
+        res.status(500).json({ message: 'Failed to create event', error: error.message });
     }
 });
 
@@ -100,8 +100,8 @@ app.post('/.netlify/functions/server/send-conflict-email', async (req, res) => {
         await transporter.sendMail(mailOptions);
         res.status(200).json({ message: 'Conflict email sent' });
     } catch (error) {
-        console.error('Error sending email:', error);
-        res.status(500).json({ message: 'Failed to send conflict email' });
+        console.error('Error sending email:', error.message);
+        res.status(500).json({ message: 'Failed to send conflict email', error: error.message });
     }
 });
 
