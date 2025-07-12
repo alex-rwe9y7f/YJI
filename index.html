@@ -97,24 +97,36 @@
 
     <section id="contact" class="contact-section">
         <div class="container">
-            <p class="section-description">Ready to transform your vehicle? Fill out the form below and we'll get back to you within 24 hours.</p>
             <h2>Get Your Free Quote</h2>
-            <form id="booking-form" class="contact-form">
+            <p class="section-description">Ready to transform your vehicle? Fill out the form below and we'll get back to you within 24 hours.</p>
+            <form id="contact-form" class="contact-form" action="YOUR_FORM_SUBMISSION_ENDPOINT" method="POST">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone (Optional):</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
                 <div class="form-group">
                     <label for="service-type">Service of Interest:</label>
                     <select id="service-type" name="service-type" required>
+                        <option value="">Select a Service</option>
                         <option value="Interior">Interior Customization</option>
                         <option value="Bedliner">Premium Bedliners</option>
                         <option value="Body">Flawless Body Work</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="date-selection">Select a Date:</label>
-                    <input type="text" id="date-selection" name="date-selection" placeholder="Click to choose a date">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary btn-submit">Request Booking</button>
+                <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
             </form>
-            <div id="status-message"></div>
         </div>
     </section>
 
@@ -236,8 +248,8 @@
             }
 
             // Basic Form Validation (Client-Side)
-            const bookingForm = document.getElementById('booking-form');
-            bookingForm.addEventListener('submit', function(event) {
+            const contactForm = document.getElementById('contact-form');
+            contactForm.addEventListener('submit', function(event) {
                 let isValid = true;
                 const requiredFields = this.querySelectorAll('[required]');
 
@@ -290,7 +302,5 @@
             });
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="booking.js"></script>
-</body>
+    </body>
 </html>

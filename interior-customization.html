@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interior Customization and Restoration</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <header>
+        <h1>Interior Customization and Restoration</h1>
+    </header>
+    <main>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+    </main>
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <p class="section-description">Ready to transform your vehicle? Fill out the form below and we'll get back to you within 24 hours.</p>
+            <h2>Get Your Free Quote</h2>
+            <form id="booking-form" class="contact-form">
+                <div class="form-group">
+                    <label for="service-type">Service of Interest:</label>
+                    <select id="service-type" name="service-type" required>
+                        <option value="Interior">Interior Customization</option>
+                        <option value="Bedliner">Premium Bedliners</option>
+                        <option value="Body">Flawless Body Work</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date-selection">Select a Date:</label>
+                    <input type="text" id="date-selection" name="date-selection" placeholder="Click to choose a date">
+                </div>
+                <button type="submit" class="btn btn-primary btn-submit">Request Booking</button>
+            </form>
+            <div id="status-message"></div>
+        </div>
+    </section>
+
+    <div id="time-slot-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Available Time Slots</h2>
+            <div id="time-slots-container"></div>
+            <button id="confirm-booking" class="btn btn-primary">Confirm Booking</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="booking.js"></script>
+</body>
+</html>
