@@ -9,4 +9,4 @@
 
 # Settings for any plugins you want to use
 [[plugins]]
-  package = "netlify-plugin-sitemap"
+  package = "@netlify/plugin-sitemap"

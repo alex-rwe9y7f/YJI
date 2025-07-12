@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Yellow Jacket Interiors</title>
+    
+    <!-- External Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Your Existing Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Custom Styles for the Gallery Page -->
+    <style>
+        /* Ensures the body has a minimum height and respects the fixed header */
+        body {
+            padding-top: 80px; /* Adjust this value based on your actual header height */
+        }
+
+        /* Gallery Section Styling */
+        .gallery-section {
+            padding: 40px 0;
+            background-color: #fff;
+            text-align: center; /* This will help center the inline-flex button group */
+        }
+
+        .gallery-section h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .gallery-section .section-description {
+            margin-bottom: 40px;
+        }
+
+        /* --- NEW: Filter Buttons Styling (Hugging Face Inspired) --- */
+        .filter-buttons {
+            display: inline-flex; /* Use inline-flex to make the container only as wide as its content */
+            justify-content: center;
+            margin-bottom: 40px;
+            border: 1px solid #e5e7eb; /* Light gray border */
+            border-radius: 0.5rem; /* 8px rounded corners */
+            overflow: hidden; /* Key to making inner borders work with the outer radius */
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+
+        .filter-btn {
+            background-color: #f9fafb; /* Light gray for non-active tabs */
+            border: none;
+            border-right: 1px solid #e5e7eb; /* Separator line */
+            color: #374151; /* Darker gray text */
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-buttons .filter-btn:last-child {
+            border-right: none; /* No separator on the last button */
+        }
+
+        .filter-btn:hover {
+            background-color: #f3f4f6; /* Slightly darker gray on hover */
+            color: #111827;
+        }
+
+        .filter-btn.active {
+            background-color: var(--secondary-color); /* Your dark blue/charcoal */
+            color: var(--primary-color); /* Your gold color */
+            box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+        }
+
+        /* Override the generic hover for the active button so it doesn't change */
+        .filter-btn.active:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+        /* --- END: New Button Styles --- */
+
+        /* Image Grid Styling */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+            text-align: left; /* Reset text-align for grid content */
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+        
+        .gallery-item:hover .overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .gallery-item .overlay-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Lightbox Modal Styling */
+        .lightbox-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.4s;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: zoomIn 0.4s;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0px;
+            color: #fff;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            color: var(--primary-color);
+        }
+        
+        .lightbox-caption {
+            text-align: center;
+            color: #ccc;
+            padding: 15px 0;
+            font-size: 1.1rem;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        /* Animation for gallery items appearing */
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        /* Keyframe animations from your style.css */
+        @keyframes fadeIn {
+            from { opacity: 0; } 
+            to { opacity: 1; }
+        }
+        
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Re-using your existing header structure -->
+    <header>
+        <div class="container">
+            <nav>
+               <a href="index.html" class="logo">Yellow Jacket <span class="accent-text">Interiors</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#about">About Us</a></li>
+                    <li><a href="gallery.html" class="active">Gallery</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#contact" class="btn btn-primary">Get a Quote</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Mobile Nav Overlay (assuming it's in your main JS or you can add it here) -->
+    <!-- ... your mobile nav HTML ... -->
+
+    <!-- Main Gallery Content -->
+    <main>
+        <section class="gallery-section">
+            <div class="container">
+                <h1>Our Work</h1>
+                <p class="section-description">A showcase of our meticulous craftsmanship and stunning results. Click to enlarge.</p>
+
+                <!-- Filter Buttons -->
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="interior">Interior</button>
+                    <button class="filter-btn" data-filter="bedliner">Bedliner</button>
+                    <button class="filter-btn" data-filter="body">Body Work</button>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="gallery-grid">
+                    <!-- Item 1 -->
+                    <div class="gallery-item" data-category="interior" data-caption="Custom Leather Seats - Classic Porsche">
+                        <img src="https://placehold.co/600x400/2c3e50/FFD700?text=Interior+1" alt="Custom car interior upholstery">
+                        <div class="overlay"><h3 class="overlay-title">Classic Porsche</h3></div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="gallery-item" data-category="bedliner" data-caption="Durable Spray-on Bedliner - Ford F-150">
+                        <img src="https://placehold.co/600x400/333333/FFFFFF?text=Bedliner+1" alt="Spray-on truck bedliner">
+                        <div class="overlay"><h3 class="overlay-title">Ford F-150</h3></div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="gallery-item" data-category="body" data-caption="Paint Correction and Scratch Removal">
+                        <img src="https://placehold.co/600x400/e74c3c/FFFFFF?text=Body+Work+1" alt="Car body work and paint correction">
+                        <div class="overlay"><h3 class="overlay-title">Paint Correction</h3></div>
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="gallery-item" data-category="interior" data-caption="Restored Vintage Dashboard">
+                        <img src="https://placehold.co/600x400/2c3e50/FFD700?text=Interior+2" alt="Restored vintage car dashboard">
+                        <div class="overlay"><h3 class="overlay-title">Vintage Dashboard</h3></div>
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="gallery-item" data-category="interior" data-caption="Alcantara Steering Wheel Wrap">
+                        <img src="https://placehold.co/600x400/2c3e50/FFD700?text=Interior+3" alt="Alcantara steering wheel">
+                        <div class="overlay"><h3 class="overlay-title">Steering Wheel</h3></div>
+                    </div>
+                    <!-- Item 6 -->
+                    <div class="gallery-item" data-category="bedliner" data-caption="Textured Finish Bedliner - Ram 1500">
+                        <img src="https://placehold.co/600x400/333333/FFFFFF?text=Bedliner+2" alt="Textured truck bedliner">
+                        <div class="overlay"><h3 class="overlay-title">Ram 1500</h3></div>
+                    </div>
+                     <!-- Item 7 -->
+                    <div class="gallery-item" data-category="body" data-caption="Full Body Repaint - Gloss Black">
+                        <img src="https://placehold.co/600x400/e74c3c/FFFFFF?text=Body+Work+2" alt="Car with new gloss black paint">
+                        <div class="overlay"><h3 class="overlay-title">Full Repaint</h3></div>
+                    </div>
+                    <!-- Item 8 -->
+                    <div class="gallery-item" data-category="bedliner" data-caption="Jeep Gladiator Bedliner Application">
+                        <img src="https://placehold.co/600x400/333333/FFFFFF?text=Bedliner+3" alt="Jeep Gladiator bedliner">
+                        <div class="overlay"><h3 class="overlay-title">Jeep Gladiator</h3></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Enlarged gallery image">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <!-- Re-using your existing footer structure -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Yellow Jacket Interiors. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/YellowJacketInteriorsLtd" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="sms:+12505805207" aria-label="Phone"><i class="fas fa-comment"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeBtn = document.querySelector('.lightbox-close');
+
+            // --- Filter Logic ---
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const filter = button.getAttribute('data-filter');
+
+                    // Show/hide gallery items based on filter
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // --- Lightbox Logic ---
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.querySelector('img').src;
+                    const caption = item.getAttribute('data-caption');
+                    
+                    lightboxImg.src = imgSrc;
+                    lightboxCaption.textContent = caption;
+                    lightbox.style.display = 'flex'; // Use flex to center content
+                });
+            });
+
+            // --- Close Lightbox ---
+            const closeLightbox = () => {
+                lightbox.style.display = 'none';
+            };
+
+            closeBtn.addEventListener('click', closeLightbox);
+            
+            // Also close lightbox when clicking on the background
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // Also close lightbox when pressing the Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
