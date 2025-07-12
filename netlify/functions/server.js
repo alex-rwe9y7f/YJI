@@ -62,9 +62,13 @@ app.post('/.netlify/functions/server/create-event', async (req, res) => {
             singleEvents: true,
         });
 
-        if (existingEvents.data.items.length > 0) {
-            const conflictDetails = { existingEvent: existingEvents.data.items[0], newRequest: event };
-            res.status(409).json({ message: 'Time slot is already booked.', conflict: conflictDetails });
+        const conflictingEvent = existingEvents.data.items.find(
+            (existingEvent) => existingEvent.summary === event.summary
+        );
+
+        if (conflictingEvent) {
+            const conflictDetails = { existingEvent: conflictingEvent, newRequest: event };
+            res.status(409).json({ message: 'Time slot is already booked for this type of event.', conflict: conflictDetails });
             return;
         }
 
