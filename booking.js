@@ -1,190 +1,195 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const serviceType = document.getElementById('service-type');
-    const dateSelection = document.getElementById('date-selection');
-    const timeSlotModal = document.getElementById('time-slot-modal');
-    const timeSlotsContainer = document.getElementById('time-slots-container');
-    const confirmBooking = document.getElementById('confirm-booking');
-    const closeModal = document.querySelector('.close-button');
-    const statusMessage = document.getElementById('status-message');
+    // --- CACHE DOM ELEMENTS ---
     const bookingForm = document.getElementById('booking-form');
+    if (!bookingForm) {
+        // If the form is not on this page, do nothing.
+        return;
+    }
+    const serviceTypeElement = document.getElementById('service-type');
+    const dateSelectionElement = document.getElementById('date-selection');
+    const timeSelectionElement = document.getElementById('time-selection');
+    const statusMessageElement = document.getElementById('status-message');
+    const submitButton = bookingForm.querySelector('button[type="submit"]');
 
-    let selectedDate = null;
-    let selectedTimeSlot = null;
-
+    // --- SERVICE DURATION CONFIGURATION ---
     const serviceDurations = {
         'Interior': 4, // 4 hours
-        'Bedliner': 8, // 8 hours
-        'Body': 8,     // 8 hours
+        'Bedliner': 8, // 8 hours (full day)
+        'Body': 8,     // 8 hours (full day)
     };
 
-    const fp = flatpickr(dateSelection, {
+    // --- INITIALIZE FLATPICKR DATE PICKER ---
+    const fp = flatpickr(dateSelectionElement, {
         minDate: 'today',
-        onChange: (selectedDates) => {
-            selectedDate = selectedDates[0];
-            if (selectedDate) {
-                fetchAvailableTimeSlots(selectedDate);
-            }
-        },
-        "disableMobile": true, // Disable mobile-friendly rendering to ensure flatpickr is always used
-        clickOpens: true // Ensure clicking the input opens the calendar
+        dateFormat: "Y-m-d",
+        "disableMobile": true,
+        // Trigger availability check when the date changes
+        onChange: () => debouncedCheckAvailability(),
     });
 
-    // Open flatpickr when the input field is focused or clicked
-    dateSelection.addEventListener('focus', () => {
-        fp.open();
-    });
+    /**
+     * Utility to limit how often a function is executed.
+     * This prevents sending too many requests to the server while the user is interacting with the form.
+     * @param {Function} func The function to debounce.
+     * @param {number} delay The delay in milliseconds.
+     * @returns {Function} The debounced function.
+     */
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    };
 
-    dateSelection.addEventListener('click', () => {
-        fp.open();
-    });
+    /**
+     * Checks the Google Calendar in real-time to see if the selected slot is available.
+     */
+    const checkAvailability = async () => {
+        const service = serviceTypeElement.value;
+        const selectedDate = dateSelectionElement.value;
+        const selectedTime = timeSelectionElement.value;
 
-    async function fetchAvailableTimeSlots(date) {
-        const service = serviceType.value;
-        const response = await fetch(`/.netlify/functions/server/get-events?date=${date.toISOString()}`);
-        const events = await response.json();
+        // Don't run the check if the form is incomplete
+        if (!service || !selectedDate || !selectedTime) {
+            statusMessageElement.textContent = '';
+            statusMessageElement.className = 'message';
+            submitButton.disabled = false; // Keep button enabled until a conflict is confirmed
+            return;
+        }
 
-        const businessHours = { start: 9, end: 17 }; // 9 AM to 5 PM
-        const timeSlots = [];
+        // Provide immediate feedback to the user that we are checking
+        statusMessageElement.textContent = 'Checking availability...';
+        statusMessageElement.className = 'message';
+        submitButton.disabled = true; // Disable button during check
+
+        // Construct the start and end times for the potential booking
+        const startTime = new Date(`${selectedDate}T${selectedTime}:00`);
         const serviceDuration = serviceDurations[service];
+        const endTime = new Date(startTime);
+        endTime.setHours(startTime.getHours() + serviceDuration);
 
-        for (let hour = businessHours.start; hour <= businessHours.end - serviceDuration; hour++) {
-            const slotStart = new Date(date);
-            slotStart.setHours(hour, 0, 0, 0);
+        try {
+            // Fetch all events for the selected day from the server
+            const response = await fetch(`/.netlify/functions/server/get-events?date=${startTime.toISOString()}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch calendar data from the server.');
+            }
+            
+            const events = await response.json();
 
-            const slotEnd = new Date(slotStart);
-            slotEnd.setHours(slotStart.getHours() + serviceDuration);
-
-            const isBooked = events.some(event => {
+            // Check if any existing event overlaps with the requested time slot
+            const isConflict = events.some(event => {
                 const eventStart = new Date(event.start.dateTime);
                 const eventEnd = new Date(event.end.dateTime);
-                return (slotStart < eventEnd && slotEnd > eventStart);
+                // The logic for an overlap is: (StartA < EndB) and (EndA > StartB)
+                return startTime < eventEnd && endTime > eventStart;
             });
 
-            if (!isBooked) {
-                timeSlots.push(slotStart);
-            }
-        }
-
-        populateTimeSlots(timeSlots);
-    }
-
-    function populateTimeSlots(slots) {
-        timeSlotsContainer.innerHTML = '';
-        if (slots.length === 0) {
-            timeSlotsContainer.innerHTML = '<p>No available time slots for this day.</p>';
-            return;
-        }
-
-        slots.forEach(slot => {
-            const button = document.createElement('button');
-            button.className = 'time-slot';
-            button.textContent = slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            button.onclick = () => {
-                selectedTimeSlot = slot;
-                // Highlight the selected button
-                document.querySelectorAll('.time-slot').forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-            };
-            timeSlotsContainer.appendChild(button);
-        });
-
-        timeSlotModal.style.display = 'block';
-    }
-
-    confirmBooking.onclick = async () => {
-        if (!selectedTimeSlot) {
-            alert('Please select a time slot.');
-            return;
-        }
-
-        const service = serviceType.value;
-        const serviceDuration = serviceDurations[service];
-        const endTime = new Date(selectedTimeSlot);
-        endTime.setHours(endTime.getHours() + serviceDuration);
-
-        const response = await fetch('/.netlify/functions/server/create-event', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title: service,
-                startTime: selectedTimeSlot.toISOString(),
-                endTime: endTime.toISOString(),
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            statusMessage.textContent = 'Booking request successful! We will contact you to confirm.';
-            timeSlotModal.style.display = 'none';
-        } else {
-            statusMessage.textContent = `Error: ${data.message}`;
-            if (data.conflict) {
-                sendConflictEmail(data.conflict);
-            }
-        }
-    };
-
-    closeModal.onclick = () => {
-        timeSlotModal.style.display = 'none';
-    };
-
-    window.onclick = (event) => {
-        if (event.target == timeSlotModal) {
-            timeSlotModal.style.display = 'none';
-        }
-    };
-
-    async function sendConflictEmail(conflictDetails) {
-        await fetch('/.netlify/functions/server/send-conflict-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(conflictDetails),
-        });
-    }
-
-    // Handle the main booking form submission
-    bookingForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        let isValid = true;
-        const requiredFields = this.querySelectorAll('[required]');
-
-        requiredFields.forEach(field => {
-            // Assuming no specific error display elements for now, just basic validation
-            if (!field.value.trim()) {
-                field.classList.add('invalid');
-                isValid = false;
+            // Update the UI based on whether a conflict was found
+            if (isConflict) {
+                statusMessageElement.textContent = 'This time slot is already booked. Please choose another time or date.';
+                statusMessageElement.className = 'message error';
+                submitButton.disabled = true; // Keep button disabled
             } else {
-                field.classList.remove('invalid');
+                statusMessageElement.textContent = 'This time slot is available!';
+                statusMessageElement.className = 'message success';
+                submitButton.disabled = false; // Re-enable the button
             }
-        });
-
-        if (!selectedDate || !selectedTimeSlot) {
-            statusMessage.textContent = 'Please select a date and time slot.';
-            statusMessage.style.display = 'block';
-            isValid = false;
-        } else {
-            statusMessage.style.display = 'none';
+        } catch (error) {
+            console.error('Availability check error:', error);
+            statusMessageElement.textContent = 'Could not verify availability. Please try again.';
+            statusMessageElement.className = 'message error';
+            // Allow user to try submitting anyway in case of a temporary network issue
+            submitButton.disabled = false;
         }
+    };
 
-        if (!isValid) {
+    // Create a debounced version of the check function to avoid excessive API calls
+    const debouncedCheckAvailability = debounce(checkAvailability, 500);
+
+    // --- ATTACH EVENT LISTENERS ---
+    // Check availability when the service or time selection changes
+    serviceTypeElement.addEventListener('change', debouncedCheckAvailability);
+    timeSelectionElement.addEventListener('change', debouncedCheckAvailability);
+
+    // --- FORM SUBMISSION EVENT LISTENER ---
+    bookingForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        // Final validation before submitting
+        const service = serviceTypeElement.value;
+        const selectedDate = dateSelectionElement.value;
+        const selectedTime = timeSelectionElement.value;
+
+        if (!service || !selectedDate || !selectedTime) {
+            statusMessageElement.textContent = 'Please ensure all fields are selected.';
+            statusMessageElement.className = 'message error';
             return;
         }
 
-        // If validation passes, proceed with booking (this part is handled by confirmBooking.onclick)
-        // For now, we'll just show a success message or trigger the modal if not already open
-        if (selectedDate && selectedTimeSlot) {
-            // This means the user has already selected a date and time via the flatpickr and modal
-            // The confirmBooking.onclick would have already been triggered.
-            // So, this submit event is more for initial validation before opening the modal.
-            // If the modal is not open, open it.
-            if (timeSlotModal.style.display === 'none' || timeSlotModal.style.display === '') {
-                populateTimeSlots([]); // Re-populate to show selected time if any, or just open modal
+        const startTime = new Date(`${selectedDate}T${selectedTime}:00`);
+        const serviceDuration = serviceDurations[service];
+        const endTime = new Date(startTime);
+        endTime.setHours(startTime.getHours() + serviceDuration);
+
+        // Show submitting status
+        statusMessageElement.textContent = 'Submitting your booking...';
+        statusMessageElement.className = 'message';
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch('/.netlify/functions/server/create-event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: service,
+                    startTime: startTime.toISOString(),
+                    endTime: endTime.toISOString(),
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                statusMessageElement.textContent = 'Booking request successful! We will contact you shortly to confirm.';
+                statusMessageElement.className = 'message success';
+                bookingForm.reset();
+                fp.clear();
+            } else {
+                statusMessageElement.textContent = `Error: ${data.message}`;
+                statusMessageElement.className = 'message error';
+                if (data.conflict) {
+                    sendConflictEmail(data.conflict);
+                }
             }
-        } else {
-            // If date/time not selected, flatpickr should open and then the modal
-            fp.open();
+        } catch (error) {
+            console.error('Booking submission error:', error);
+            statusMessageElement.textContent = 'A network error occurred. Please try again later.';
+            statusMessageElement.className = 'message error';
+        } finally {
+            // Re-enable button after submission attempt unless successful
+            if (statusMessageElement.className.includes('error')) {
+                submitButton.disabled = false;
+            }
         }
     });
+
+    /**
+     * Sends an email notification about a booking conflict (optional).
+     * @param {object} conflictDetails - The details of the conflict from the server.
+     */
+    async function sendConflictEmail(conflictDetails) {
+        try {
+            await fetch('/.netlify/functions/server/send-conflict-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(conflictDetails),
+            });
+        } catch (error) {
+            console.error('Failed to send conflict email:', error);
+        }
+    }
 });

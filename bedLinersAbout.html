@@ -55,35 +55,34 @@
 
       <section id="contact" class="contact-section">
         <div class="container">
-            <h2>Get Your Free Quote</h2>
-            <p class="section-description">Ready to transform your vehicle? Fill out the form below and we'll get back to you within 24 hours.</p>
+            <h2>Book Your Appointment</h2>
+            <p class="section-description">Ready to protect your truck? Fill out the form below to book your appointment.</p>
             <form id="booking-form" class="contact-form">
                 <div class="form-group">
                     <label for="service-type">Service of Interest:</label>
                     <select id="service-type" name="service-type" required>
-                        <option value="Interior">Interior Customization</option>
                         <option value="Bedliner">Premium Bedliners</option>
+                        <option value="Interior">Interior Customization</option>
                         <option value="Body">Flawless Body Work</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="date-selection">Select a Date:</label>
-                    <input type="text" id="date-selection" name="date-selection" placeholder="Click to choose a date">
+                    <input type="text" id="date-selection" name="date-selection" placeholder="Click to choose a date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time-selection">Select a Time:</label>
+                    <select id="time-selection" name="time-selection" required>
+                        <option value="">Select a Time</option>
+                        <option value="08:30">8:30 AM</option>
+                        <option value="13:30">1:30 PM</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary btn-submit">Request Booking</button>
             </form>
-            <div id="status-message"></div>
+            <div id="status-message" class="message" style="margin-top: 20px;"></div>
         </div>
     </section>
-
-    <div id="time-slot-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Available Time Slots</h2>
-            <div id="time-slots-container"></div>
-            <button id="confirm-booking" class="btn btn-primary">Confirm Booking</button>
-        </div>
-    </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="booking.js"></script>
