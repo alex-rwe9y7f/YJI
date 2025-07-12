@@ -1,0 +1,12 @@
+# Main settings for building your site
+[build]
+  command = "npm install"
+  publish = "/" # The root folder of your site, where index.html is
+
+# Settings for your serverless functions
+[functions]
+  directory = "netlify/functions/" # The correct path to your functions folder
+
+# Settings for any plugins you want to use
+[[plugins]]
+  package = "netlify-plugin-sitemap"
