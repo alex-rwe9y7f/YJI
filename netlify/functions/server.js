@@ -31,7 +31,7 @@ app.get('/.netlify/functions/server/get-events', async (req, res) => {
 
     try {
         const response = await calendar.events.list({
-            calendarId: 'primary',
+            calendarId: process.env.EMAIL_USER,
             timeMin: timeMin.toISOString(),
             timeMax: timeMax.toISOString(),
             singleEvents: true,
@@ -56,7 +56,7 @@ app.post('/.netlify/functions/server/create-event', async (req, res) => {
     try {
         // Check for conflicts first
         const existingEvents = await calendar.events.list({
-            calendarId: 'primary',
+            calendarId: process.env.EMAIL_USER,
             timeMin: event.start.dateTime,
             timeMax: event.end.dateTime,
             singleEvents: true,
@@ -68,7 +68,7 @@ app.post('/.netlify/functions/server/create-event', async (req, res) => {
             return;
         }
 
-        const response = await calendar.events.insert({ calendarId: 'primary', resource: event });
+        const response = await calendar.events.insert({ calendarId: process.env.EMAIL_USER, resource: event });
         res.status(200).json({ message: 'Event created successfully', event: response.data });
     } catch (error) {
         console.error('Error creating event:', error.message);

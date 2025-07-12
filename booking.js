@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         slots.forEach(slot => {
             const button = document.createElement('button');
-            button.className = 'time-slot-btn';
+            button.className = 'time-slot';
             button.textContent = slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             button.onclick = () => {
                 selectedTimeSlot = slot;
@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
             statusMessage.textContent = 'Booking request successful! We will contact you to confirm.';
             timeSlotModal.style.display = 'none';
+            requestBookingButton.disabled = true;
         } else {
             statusMessage.textContent = `Error: ${data.message}`;
             if (data.conflict) {
