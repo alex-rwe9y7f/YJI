@@ -1,0 +1,20 @@
+{
+  "name": "momswebsite",
+  "version": "1.0.0",
+  "description": "This project integrates Google Calendar event creation into a website form. Users can submit a form to create an event on a specific Google Calendar.",
+  "main": "booking.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@netlify/plugin-sitemap": "^0.8.1",
+    "express": "^4.18.2",
+    "googleapis": "^126.0.1",
+    "serverless-http": "^3.2.0",
+    "nodemailer": "^6.9.7",
+    "cors": "^2.8.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
