@@ -224,17 +224,19 @@
             highlightNavLink(); // Call on load
 
             // Update email subject based on service selection
-            const serviceInterest = document.getElementById('service-interest');
-            const emailSubject = document.getElementById('email-subject');
+            // Update email subject based on service selection
+            const serviceTypeElement = document.getElementById('service-type');
+            // There is no emailSubject element, so this part of the code will be removed.
 
-            serviceInterest.addEventListener('change', function() {
-                const selectedService = this.options[this.selectedIndex].text;
-                const date = new Date().toLocaleString();
-                emailSubject.value = `Service Request: ${selectedService} from website (${date})`;
-            });
+            if (serviceTypeElement) {
+                serviceTypeElement.addEventListener('change', function() {
+                    const selectedService = this.options[this.selectedIndex].text;
+                    // If there was an emailSubject element, its value would be updated here.
+                });
+            }
 
             // Basic Form Validation (Client-Side)
-            const contactForm = document.getElementById('contactForm');
+            const bookingForm = document.getElementById('booking-form');
             contactForm.addEventListener('submit', function(event) {
                 let isValid = true;
                 const requiredFields = this.querySelectorAll('[required]');
