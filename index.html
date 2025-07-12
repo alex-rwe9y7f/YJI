@@ -110,7 +110,7 @@
                 </div>
                 <div class="form-group">
                     <label for="date-selection">Select a Date:</label>
-                    <input type="text" id="date-selection" name="date-selection" placeholder="Click to choose a date" readonly>
+                    <input type="text" id="date-selection" name="date-selection" placeholder="Click to choose a date">
                 </div>
                 <button type="submit" class="btn btn-primary btn-submit">Request Booking</button>
             </form>
@@ -187,7 +187,7 @@
             mobileNavOverlay.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileNavOverlay.classList.remove('active');
-                    document.body.classList.remove('no-scroll');
+                    document.body.classList.remove('no-scroll'); // Always remove no-scroll
                 });
             });
 

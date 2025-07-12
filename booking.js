@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeSlotModal = document.getElementById('time-slot-modal');
     const timeSlotsContainer = document.getElementById('time-slots-container');
     const confirmBooking = document.getElementById('confirm-booking');
+    const requestBookingButton = document.querySelector('.btn-submit'); // Get the Request Booking button
     const closeModal = document.querySelector('.close-button');
     const statusMessage = document.getElementById('status-message');
 
     let selectedDate = null;
     let selectedTimeSlot = null;
+
+    // Initially disable the button
+    requestBookingButton.disabled = true;
 
     const serviceDurations = {
         'Interior': 4, // 4 hours
@@ -16,12 +20,28 @@ document.addEventListener('DOMContentLoaded', () => {
         'Body': 8,     // 8 hours
     };
 
-    flatpickr(dateSelection, {
+    const fp = flatpickr(dateSelection, {
         minDate: 'today',
         onChange: (selectedDates) => {
             selectedDate = selectedDates[0];
-            fetchAvailableTimeSlots(selectedDate);
+            if (selectedDate) {
+                requestBookingButton.disabled = false; // Enable if date is selected
+                fetchAvailableTimeSlots(selectedDate);
+            } else {
+                requestBookingButton.disabled = true; // Disable if date is cleared
+            }
         },
+        "disableMobile": true, // Disable mobile-friendly rendering to ensure flatpickr is always used
+        clickOpens: true // Ensure clicking the input opens the calendar
+    });
+
+    // Open flatpickr when the input field is focused or clicked
+    dateSelection.addEventListener('focus', () => {
+        fp.open();
+    });
+
+    dateSelection.addEventListener('click', () => {
+        fp.open();
     });
 
     async function fetchAvailableTimeSlots(date) {

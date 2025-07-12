@@ -237,8 +237,16 @@
         </div>
     </header>
     
-    <!-- Mobile Nav Overlay (assuming it's in your main JS or you can add it here) -->
-    <!-- ... your mobile nav HTML ... -->
+    <div class="mobile-nav-overlay">
+        <button class="close-mobile-menu" aria-label="Close navigation menu"><i class="fas fa-times"></i></button>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="index.html#testimonials">Testimonials</a></li>
+            <li><a href="index.html#contact" class="btn btn-primary">Get a Quote</a></li>
+        </ul>
+    </div>
 
     <!-- Main Gallery Content -->
     <main>
@@ -324,6 +332,29 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            const closeMobileMenu = document.querySelector('.close-mobile-menu');
+
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileNavOverlay.classList.add('active');
+                document.body.classList.add('no-scroll'); // Prevent background scroll
+            });
+
+            closeMobileMenu.addEventListener('click', () => {
+                mobileNavOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
+                });
+            });
+
             const filterButtons = document.querySelectorAll('.filter-btn');
             const galleryItems = document.querySelectorAll('.gallery-item');
             const lightbox = document.getElementById('lightbox');
