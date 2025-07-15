@@ -6,137 +6,8 @@
   <meta name="description" content="Professional bumper and fender respray services. Precision color match and flawless finish by our seasoned paint specialist." />
 
   <title>Bumper & Fender Resprays | Yellow Jacket Interiors</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Basic Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --primary-color: #FFD700;
-      --secondary-color: #2c3e50;
-      --accent-color: #e74c3c;
-      --light-bg: #f8f9fa;
-      --dark-bg: #1a1a1a;
-      --text-dark: #333;
-      --text-light: #f4f4f4;
-      --transition-speed: 0.3s;
-    }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      line-height: 1.7;
-      color: var(--text-dark);
-      background-color: var(--light-bg);
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    header {
-      background: var(--dark-bg);
-      color: var(--text-light);
-      padding: 60px 0;
-      text-align: center;
-    }
-
-    header h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 2.5rem;
-    }
-
-    .image-holder {
-      text-align: center;
-      margin: 40px 0;
-    }
-    .image-holder img {
-      max-width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      transition: transform var(--transition-speed) ease;
-    }
-    .image-holder img:hover {
-      transform: scale(1.02);
-    }
-
-    .intro {
-      text-align: center;
-      margin: 40px 0;
-    }
-
-    .intro h2 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      color: var(--secondary-color);
-    }
-
-    .intro p {
-      font-size: 1.1rem;
-      color: #666;
-    }
-
-    .section {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-      padding: 30px;
-      border-top: 5px solid var(--primary-color);
-    }
-
-    .section h3 {
-      font-family: 'Montserrat', sans-serif;
-      color: var(--secondary-color);
-      margin-bottom: 15px;
-    }
-
-    .section ul {
-      list-style: disc inside;
-      margin-top: 10px;
-    }
-
-    .section ul li {
-      margin-bottom: 8px;
-    }
-
-    .section h4 {
-      margin-top: 20px;
-      color: var(--secondary-color);
-      font-size: 1.3rem;
-    }
-
-    .cta {
-      text-align: center;
-      margin: 40px 0;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      padding: 12px 30px;
-      background-color: var(--primary-color);
-      color: var(--secondary-color);
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--secondary-color);
-      color: var(--primary-color);
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 768px) {
-      header h1 { font-size: 2rem; }
-      .intro h2 { font-size: 1.5rem; }
-      .section { padding: 20px; }
-      .image-holder { margin: 30px 0; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -175,13 +46,12 @@
     </section>
 
     <main>
-        <div class="container">
+        <div class="container spray-about-content">
             <section class="intro">
                 <h2>Precision Colour Matching & Flawless Finish</h2>
             </section>
-            <!-- Image Placeholder -->
             <div class="image-holder">
-                <img src="media/duck.jpg" alt="Professional bumper respray in progress">
+                <img src="media/respray.png" alt="Professional bumper respray in progress">
             </div>
 
             <section class="intro">
@@ -211,7 +81,7 @@
             </section>
 
             <div class="cta">
-                <a href="index.html#contact" class="btn-primary">Book Your Respray</a>
+                <a href="index.html#contact" class="btn btn-primary">Book Now</a>
             </div>
         </div>
     </main>
@@ -236,13 +106,7 @@
         </div>
     </footer>
 
-    <div id="serviceModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalDescription"></p>
-        </div>
-    </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="booking.js"></script>
