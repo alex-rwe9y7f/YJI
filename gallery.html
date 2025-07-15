@@ -287,8 +287,8 @@
                     </div>
                     <!-- Item 5 -->
                     <div class="gallery-item" data-category="interior" data-caption="Bedliner Texture - Used for Interior Example">
-                        <img src="media/bedliners2.png" alt="Textured surface, used as an example for interior work">
-                        <div class="overlay"><h3 class="overlay-title">Textured Interior Example</h3></div>
+                        <img src="media/TruckRespray2.JPG" alt="Textured surface, used as an example for interior work">
+                        <div class="overlay"><h3 class="overlay-title">Truck Respray</h3></div>
                     </div>
                      <!-- Item 7 -->
                     <div class="gallery-item" data-category="body" data-caption="Truck Respray - Before and After">
@@ -314,9 +314,18 @@
         </div>
     </div>
 
-    <!-- Re-using your existing footer structure -->
     <footer>
         <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>OPENING HOURS</h3>
+                    <p>Call for an Appointment 250-580-4312 or 778-430-3333</p>
+                    <p>698 Sumas Street, Victoria, BC</p>
+                    <p>Mon - Fri: 9am - 4pm</p>
+                    <p>Sat: By Appointment Only</p>
+                    <p>Sun: Closed</p>
+                </div>
+            </div>
             <p>&copy; 2025 Yellow Jacket Interiors. All rights reserved.</p>
             <div class="social-links">
                 <a href="https://www.facebook.com/YellowJacketInteriorsLtd" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -325,8 +334,39 @@
         </div>
     </footer>
 
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="booking.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const offsetTop = targetElement.offsetTop - document.querySelector('header').offsetHeight; // Adjust for sticky header
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                        // Close mobile menu if open
+                        if (mobileNavOverlay.classList.contains('active')) {
+                            mobileNavOverlay.classList.remove('active');
+                            document.body.classList.remove('no-scroll');
+                        }
+                    }
+                });
+            });
+
             // Mobile menu toggle
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
             const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
@@ -346,68 +386,106 @@
             mobileNavOverlay.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileNavOverlay.classList.remove('active');
-                    document.body.classList.remove('no-scroll');
+                    document.body.classList.remove('no-scroll'); // Always remove no-scroll
                 });
             });
 
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            const lightboxCaption = document.getElementById('lightbox-caption');
-            const closeBtn = document.querySelector('.lightbox-close');
+            // Active navigation link highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
 
-            // --- Filter Logic ---
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Update active button
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    const filter = button.getAttribute('data-filter');
-
-                    // Show/hide gallery items based on filter
-                    galleryItems.forEach(item => {
-                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                            item.classList.remove('hidden');
-                        } else {
-                            item.classList.add('hidden');
-                        }
-                    });
+            const highlightNavLink = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - document.querySelector('header').offsetHeight - 50; // Offset for header + buffer
+                    if (pageYOffset >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
                 });
-            });
 
-            // --- Lightbox Logic ---
-            galleryItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const imgSrc = item.querySelector('img').src;
-                    const caption = item.getAttribute('data-caption');
-                    
-                    lightboxImg.src = imgSrc;
-                    lightboxCaption.textContent = caption;
-                    lightbox.style.display = 'flex'; // Use flex to center content
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-section') === current) {
+                        link.classList.add('active');
+                    }
                 });
-            });
-
-            // --- Close Lightbox ---
-            const closeLightbox = () => {
-                lightbox.style.display = 'none';
+                mobileNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
             };
 
-            closeBtn.addEventListener('click', closeLightbox);
-            
-            // Also close lightbox when clicking on the background
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) {
-                    closeLightbox();
+            window.addEventListener('scroll', highlightNavLink);
+            window.addEventListener('resize', highlightNavLink); // Recalculate on resize
+            highlightNavLink(); // Call on load
+
+            // Update email subject based on service selection
+            // Update email subject based on service selection
+            const serviceTypeElement = document.getElementById('service-type');
+            // There is no emailSubject element, so this part of the code will be removed.
+
+            if (serviceTypeElement) {
+                serviceTypeElement.addEventListener('change', function() {
+                    const selectedService = this.options[this.selectedIndex].text;
+                    // If there was an emailSubject element, its value would be updated here.
+                });
+            }
+
+            // Basic Form Validation (Client-Side)
+            const contactForm = document.getElementById('contact-form');
+            contactForm.addEventListener('submit', function(event) {
+                let isValid = true;
+                const requiredFields = this.querySelectorAll('[required]');
+
+                requiredFields.forEach(field => {
+                    const errorDisplay = document.getElementById(field.id + '-error');
+                    if (!field.value.trim()) {
+                        field.classList.add('invalid');
+                        errorDisplay.textContent = 'This field is required.';
+                        isValid = false;
+                    } else if (field.type === 'email' && !isValidEmail(field.value)) {
+                        field.classList.add('invalid');
+                        errorDisplay.textContent = 'Please enter a valid email address.';
+                        isValid = false;
+                    }
+                     else {
+                        field.classList.remove('invalid');
+                        errorDisplay.textContent = '';
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault(); // Stop form submission if invalid
                 }
             });
-            
-            // Also close lightbox when pressing the Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeLightbox();
-                }
+
+            function isValidEmail(email) {
+                // Simple regex for email validation
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            };
+
+            // Observe service cards for animation
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in'); // Add a class for animation
+                    } else {
+                        entry.target.classList.remove('animate-in'); // Remove if out of view
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.add('fade-in-up-init'); // Initial state for animation
+                observer.observe(card);
             });
         });
     </script>

@@ -23,6 +23,7 @@ body {
     line-height: 1.7;
     color: var(--text-dark);
     background-color: var(--light-bg);
+    padding-top: 50px; /* Added to prevent content from being hidden by fixed header */
 }
 
 .container {
@@ -484,6 +485,15 @@ footer {
 }
 .image-holder img:hover {
   transform: scale(1.02);
+}
+
+.bedliner-container .image-holder {
+    max-width: 600px; /* Reduced size for bedliners page */
+    margin: 0 auto 60px auto; /* Center the image and add bottom margin */
+}
+
+.bedliner-container .image-holder {
+    max-width: 600px; /* Reduced size for bedliners page */
 }
 
 .intro {

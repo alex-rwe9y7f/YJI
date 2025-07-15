@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "disableMobile": true,
         "disable": [
             function(date) {
-                return (date.getDay() === 0 || date.getDay() === 6);
+                return (date.getDay() === 0);
             }
         ],
         onChange: () => debouncedCheckAvailability(),
@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedDate = new Date(selectedDateStr + 'T00:00:00');
             const day = selectedDate.getDay();
 
-            if (day === 0 || day === 6) {
-                statusMessageElement.textContent = 'For weekend availability, please call or text 250-580-5207.';
+            if (day === 0) {
+                statusMessageElement.textContent = 'For Sunday availability, please call or text 250-580-5207.';
                 statusMessageElement.className = 'message error';
                 submitButton.disabled = true;
                 return;
