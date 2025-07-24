@@ -484,6 +484,37 @@ footer {
     color: var(--primary-color);
 }
 
+.copy-phone {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+}
+
+.copy-phone:hover {
+    text-decoration: underline;
+}
+
+.copy-phone .fa-copy {
+    margin-left: 5px;
+}
+
+.copy-feedback {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
 /* Bedliners Page Specific */
 .container.bedliner-container {
   max-width: 800px;
