@@ -86,7 +86,7 @@
             <div class="footer-content">
                 <div class="footer-info">
                     <h3>OPENING HOURS</h3>
-                    <p>Call for an Appointment 250-580-4312 or 778-430-3333</p>
+                     <p>Call or Text for an Appointment @ <a href="#" class="copy-phone" data-phone="250-580-4312">250-580-4312 <i class="far fa-copy"></i></a> or <a href="#" class="copy-phone" data-phone="778-430-3333">778-430-3333 <i class="far fa-copy"></i></a></p>
                     <p>698 Sumas Street, Victoria, BC</p>
                     <p>Mon - Fri: 9am - 4pm</p>
                     <p>Sat: By Appointment Only</p>
@@ -100,7 +100,28 @@
             </div>
         </div>
     </footer>
-    
+    <script>document.querySelectorAll('.copy-phone').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const phone = this.dataset.phone;
+                    navigator.clipboard.writeText(phone).then(() => {
+                        const feedback = document.createElement('span');
+                        feedback.classList.add('copy-feedback');
+                        feedback.textContent = 'Copied!';
+                        this.appendChild(feedback);
+                        setTimeout(() => {
+                            feedback.style.opacity = '1';
+                        }, 10);
+                        setTimeout(() => {
+                            feedback.style.opacity = '0';
+                            setTimeout(() => {
+                                feedback.remove();
+                            }, 300);
+                        }, 2000);
+                    });
+                });
+            });
+        ;</script>
     <script src="booking.js"></script>
 </body>
 </html>
