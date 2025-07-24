@@ -1,3 +1,17 @@
+Of course. I can fix those issues for you. The vertical alignment in the navigation bar and the text color on the button can both be adjusted by making a couple of small changes to your CSS.
+
+Here are the two changes I'll make:
+
+1.  I'll add `align-items: center;` to your `.nav-links` style. This will ensure all navigation items, including the text links and the taller "Get a Quote" button, are perfectly centered vertically with each other.
+2.  I'll add a new, more specific CSS rule to set the color of the "Get a Quote" button text to the theme's dark color (`#2c3e50`), which is nearly black. This overrides the default link color that was being applied incorrectly.
+
+-----
+
+## Updated CSS
+
+Here is the complete `style.css` file with the corrections applied. You can replace your existing stylesheet with this code.
+
+```css
 /* Basic Reset */
 * {
     margin: 0;
@@ -68,6 +82,7 @@ nav {
     list-style: none;
     display: flex;
     gap: 30px;
+    align-items: center; /* FIX: Vertically aligns nav items */
 }
 
 .nav-links li a {
@@ -126,6 +141,12 @@ nav {
     color: var(--secondary-color);
     border: 2px solid var(--primary-color);
 }
+
+/* FIX: Sets correct text color for the quote button in the nav */
+.nav-links .btn-primary {
+    color: var(--secondary-color);
+}
+
 
 .btn-primary:hover:not(:disabled) {
     background-color: var(--secondary-color);
@@ -346,14 +367,22 @@ h2 {
 }
 
 .service-content .read-more {
-    color: var(--accent-color);
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 12px 25px;
+    border-radius: 5px;
     text-decoration: none;
-    font-weight: 600;
-    transition: color var(--transition-speed) ease;
+    font-weight: 700;
+    transition: all var(--transition-speed) ease;
+    border: 2px solid var(--primary-color);
+    margin-top: 10px;
 }
 
 .service-content .read-more:hover {
-    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .read-more i {
@@ -781,7 +810,29 @@ footer {
     margin-bottom: 0;
 }
 
+/* --- New CTA Section Style --- */
+.cta-section {
+    background: var(--secondary-color); /* Dark background for contrast */
+    color: var(--text-light);
+    padding: 60px 30px;
+    border-radius: 8px;
+    margin: 80px 0;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
 
+.cta-section h2 {
+    color: var(--primary-color); /* Yellow heading text */
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto 30px;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .polyurea-section {
