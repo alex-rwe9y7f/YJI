@@ -1,248 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K66YGHQDFG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-K66YGHQDFG');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You!</title>
-    <meta name="robots" content="noindex, follow">
-    <meta name="description" content="Thank you for your booking with Yellow Jacket Interiors. Your request has been received.">
-    <meta name="keywords" content="thank you, booking confirmation, Yellow Jacket Interiors">
+    <title>Thank You - Yellow Jacket Interiors</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K66YGHQDFG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-K66YGHQDFG');
+    </script>
+    <!-- Event snippet for website lead conversion page -->
+    <script>
+      gtag('event', 'conversion', {'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL'});
+    </script>
 </head>
 <body>
     <header>
         <div class="container">
             <nav>
-               <a href="index.html" class="logo">Yellow Jacket <span class="accent-text">Interiors</span></a>
-                <ul class="nav-links">
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="index.html#about">About Us</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="index.html#testimonials">Testimonials</a></li>
-                    <li><a href="index.html#contact" class="btn btn-primary">Get a Quote</a></li>
-                </ul>
-                <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+               <a href="/" class="logo">Yellow Jacket <span class="accent-text">Interiors</span></a>
             </nav>
         </div>
     </header>
 
-    <div class="mobile-nav-overlay">
-        <button class="close-mobile-menu" aria-label="Close navigation menu"><i class="fas fa-times"></i></button>
-        <ul class="mobile-nav-links">
-            <li><a href="index.html#services">Services</a></li>
-            <li><a href="index.html#about">About Us</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="index.html#testimonials">Testimonials</a></li>
-            <li><a href="index.html#contact" class="btn btn-primary">Get a Quote</a></li>
-        </ul>
-    </div>
-
-    <main>
-        <div class="container" style="text-align: center; padding: 50px 20px;">
-            <h1 style="color: var(--primary-color); font-size: 3em; margin-bottom: 20px;">Thank You for Your Booking!</h1>
-            <p style="font-size: 1.2em; margin-bottom: 30px;">Your appointment request has been received. We will contact you shortly to confirm the details.</p>
-            <a href="index.html" class="btn btn-primary" style="padding: 15px 30px; font-size: 1.1em;">Return to Homepage</a>
+    <section class="thank-you-section">
+        <div class="container">
+            <h1>Thank You!</h1>
+            <p>Your message has been sent. We will get back to you within 24 hours.</p>
+            <a href="/" class="btn btn-primary">Back to Home</a>
         </div>
-    </main>
+    </section>
 
     <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <h3>OPENING HOURS</h3>
-                    <p>Call or Text for an Appointment @ <a href="#" class="copy-phone" data-phone="250-580-4312">250-580-4312 <i class="far fa-copy"></i></a> or <a href="#" class="copy-phone" data-phone="778-430-3333">778-430-3333 <i class="far fa-copy"></i></a></p>
-                    <p>698 Sumas Street, Victoria, BC</p>
-                    <p>Mon - Fri: 9am - 4pm</p>
-                    <p>Sat: By Appointment Only</p>
-                    <p>Sun: Closed</p>
-                </div>
-            </div>
             <p>&copy; 2025 Yellow Jacket Interiors. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://www.facebook.com/YellowJacketInteriorsLtd" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="sms:+12505805207" aria-label="Phone"><i class="fas fa-comment"></i></a>
-            </div>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>document.querySelectorAll('.copy-phone').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const phone = this.dataset.phone;
-                    navigator.clipboard.writeText(phone).then(() => {
-                        const feedback = document.createElement('span');
-                        feedback.classList.add('copy-feedback');
-                        feedback.textContent = 'Copied!';
-                        this.appendChild(feedback);
-                        setTimeout(() => {
-                            feedback.style.opacity = '1';
-                        }, 10);
-                        setTimeout(() => {
-                            feedback.style.opacity = '0';
-                            setTimeout(() => {
-                                feedback.remove();
-                            }, 300);
-                        }, 2000);
-                    });
-                });
-            });
-        ;</script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        const offsetTop = targetElement.offsetTop - document.querySelector('header').offsetHeight; // Adjust for sticky header
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                        // Close mobile menu if open
-                        if (mobileNavOverlay.classList.contains('active')) {
-                            mobileNavOverlay.classList.remove('active');
-                            document.body.classList.remove('no-scroll');
-                        }
-                    }
-                });
-            });
-
-            // Mobile menu toggle
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-            const closeMobileMenu = document.querySelector('.close-mobile-menu');
-
-            mobileMenuToggle.addEventListener('click', () => {
-                mobileNavOverlay.classList.add('active');
-                document.body.classList.add('no-scroll'); // Prevent background scroll
-            });
-
-            closeMobileMenu.addEventListener('click', () => {
-                mobileNavOverlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-            });
-
-            // Close mobile menu when a link is clicked
-            mobileNavOverlay.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileNavOverlay.classList.remove('active');
-                    document.body.classList.remove('no-scroll'); // Always remove no-scroll
-                });
-            });
-
-            // Active navigation link highlighting
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-links a');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
-
-            const highlightNavLink = () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - document.querySelector('header').offsetHeight - 50; // Offset for header + buffer
-                    if (pageYOffset >= sectionTop) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('data-section') === current) {
-                        link.classList.add('active');
-                    }
-                });
-                mobileNavLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').substring(1) === current) {
-                        link.classList.add('active');
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', highlightNavLink);
-            window.addEventListener('resize', highlightNavLink); // Recalculate on resize
-            highlightNavLink(); // Call on load
-
-            // Update email subject based on service selection
-            // Update email subject based on service selection
-            const serviceTypeElement = document.getElementById('service-type');
-            // There is no emailSubject element, so this part of the code will be removed.
-
-            if (serviceTypeElement) {
-                serviceTypeElement.addEventListener('change', function() {
-                    const selectedService = this.options[this.selectedIndex].text;
-                    // If there was an emailSubject element, its value would be updated here.
-                });
-            }
-
-            // Basic Form Validation (Client-Side)
-            const contactForm = document.getElementById('contact-form');
-            contactForm.addEventListener('submit', function(event) {
-                let isValid = true;
-                const requiredFields = this.querySelectorAll('[required]');
-
-                requiredFields.forEach(field => {
-                    const errorDisplay = document.getElementById(field.id + '-error');
-                    if (!field.value.trim()) {
-                        field.classList.add('invalid');
-                        errorDisplay.textContent = 'This field is required.';
-                        isValid = false;
-                    } else if (field.type === 'email' && !isValidEmail(field.value)) {
-                        field.classList.add('invalid');
-                        errorDisplay.textContent = 'Please enter a valid email address.';
-                        isValid = false;
-                    }
-                     else {
-                        field.classList.remove('invalid');
-                        errorDisplay.textContent = '';
-                    }
-                });
-
-                if (!isValid) {
-                    event.preventDefault(); // Stop form submission if invalid
-                }
-            });
-
-            function isValidEmail(email) {
-                // Simple regex for email validation
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            };
-
-            // Observe service cards for animation
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-in'); // Add a class for animation
-                    } else {
-                        entry.target.classList.remove('animate-in'); // Remove if out of view
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.service-card').forEach(card => {
-                card.classList.add('fade-in-up-init'); // Initial state for animation
-                observer.observe(card);
-            });
-        });
-    </script>
 </body>
 </html>
