@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interior Customization and Restoration</title>
+    <meta name="description" content="Yellow Jacket Interiors specializes in premium auto interior customization, including leather upholstery, refinishing, and restoration of headliners, consoles, and more. Serving Victoria, BC." />
+  <meta name="keywords" content="auto interior customization, car upholstery, leather interior, vehicle refinishing, headliner repair, console restoration, custom car interior, Yellow Jacket Interiors, Victoria BC">
+  <title>Auto Interior Customization & Restoration | Yellow Jacket Interiors</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -71,12 +73,11 @@
     </main>
     <section id="contact" class="contact-section">
         <div class="container">
-                
-            <h2>Get Your Free Quote</h2>
-            <div class="cta">
-                <a href="index.html#contact" class="btn btn-primary">Book Now</a>
+            <div class="cta-section">
+                <h2>Get Your Free Quote</h2>
+                <p>Ready to restore your vehicle's finish? Send us a message about your project, and we'll get back to you with a free quote within 24 hours.</p>
+                <a href="index.html#contact" class="btn btn-primary">Go to Contact Form</a>
             </div>
-            <div id="status-message"></div>
         </div>
     </section>
 
@@ -87,7 +88,7 @@
             <div class="footer-content">
                 <div class="footer-info">
                     <h3>OPENING HOURS</h3>
-                    <p>Call for an Appointment 250-580-4312 or 778-430-3333</p>
+                    <p>Call or Text for an Appointment @ <a href="#" class="copy-phone" data-phone="250-580-4312">250-580-4312 <i class="far fa-copy"></i></a> or <a href="#" class="copy-phone" data-phone="778-430-3333">778-430-3333 <i class="far fa-copy"></i></a></p>
                     <p>698 Sumas Street, Victoria, BC</p>
                     <p>Mon - Fri: 9am - 4pm</p>
                     <p>Sat: By Appointment Only</p>
@@ -107,6 +108,28 @@
     <script src="booking.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="booking.js"></script>
+    <script>document.querySelectorAll('.copy-phone').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const phone = this.dataset.phone;
+                    navigator.clipboard.writeText(phone).then(() => {
+                        const feedback = document.createElement('span');
+                        feedback.classList.add('copy-feedback');
+                        feedback.textContent = 'Copied!';
+                        this.appendChild(feedback);
+                        setTimeout(() => {
+                            feedback.style.opacity = '1';
+                        }, 10);
+                        setTimeout(() => {
+                            feedback.style.opacity = '0';
+                            setTimeout(() => {
+                                feedback.remove();
+                            }, 300);
+                        }, 2000);
+                    });
+                });
+            });
+        ;</script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Smooth scrolling for navigation links

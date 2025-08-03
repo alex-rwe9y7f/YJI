@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yellow Jacket Interiors - Premium Auto Customization</title>
+    <title>Yellow Jacket Interiors - Premium Auto Customization, Bedliners & Body Work</title>
+    <meta name="description" content="Yellow Jacket Interiors offers premium auto customization, durable spray-on bedliners, and flawless body work. Transform your vehicle with our expert craftsmanship.">
+    <meta name="keywords" content="auto customization, car interior, spray-on bedliners, truck bed protection, auto body work, dent removal, scratch repair, vehicle paint, Yellow Jacket Interiors, Victoria BC">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -16,7 +18,7 @@
                <a href="#hero" class="logo">Yellow Jacket <span class="accent-text">Interiors</span></a>
                 <ul class="nav-links">
                     <li><a href="#services">Services</a></li>
-                    <li><a href="#about">About Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="#testimonials">Testimonials</a></li>
                     <li><a href="#contact" class="btn btn-primary">Get a Quote</a></li>
@@ -32,10 +34,10 @@
         <button class="close-mobile-menu" aria-label="Close navigation menu"><i class="fas fa-times"></i></button>
         <ul class="mobile-nav-links">
             <li><a href="#services">Services</a></li>
-            <li><a href="#about">About Us</a></li>
+            <li><a href="about.html">About Us</a></li>
             <li><a href="gallery.html">Gallery</a></li>
             <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#contact" class="btn btn-primary">Get a Quote</a></li>
+            <li><a href="#contact" class="btn btn-primary" colour="blue">Get a Quote</a></li>
         </ul>
     </div>
 
@@ -73,9 +75,13 @@
                 </div>
                 <div class="service-item service-item-right">
                     <div class="service-content">
-                        <h3>Premium Bedliners</h3>
-                        <p>Protect your truck bed from wear and tear with our durable spray-on bedliners. Our high-quality polyurea coating provides superior adhesion, impact resistance, and a watertight seal. It's a long-lasting finish that's guaranteed to handle the toughest jobs.</p>
-                        <a href="BedLinersAbout.html" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                        <h3>PROTECTIVE COATINGS</h3>
+                        <p class="section-description" style="text-align: left; margin: -10px 0 20px 0; font-style: italic; font-weight: 600;">The Ultimate in 4X4 Vehicle Coatings!</p>
+                        <h5>HEAVY DUTY PROTECTION</h5>
+                        <p>For the toughest uses, we spray Gardit. At 4000 lbs/sq.in., Gardit's high tensile strength will prevent wear and tear on your off-road truck or industrial vehicle.</p>
+                        <p>Gardit provides tough spray-on protection for your truck bed and many other surfaces. This two-component polyurethane/polyurea hybrid coating has been carefully designed for maximum adhesion, hardness, and tear strength.</p>
+                        <p>Offering the latest in polyurethane/polyurea technology for impact, corrosion, and chemical resistance, it is the best truck bedliner option for heavy industrial use by contractors who constantly slide equipment or shovel materials in and out of their truck.</p>
+                        <a href="BedLinersAbout.html" class="read-more">More About Protective Coatings <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="service-image">
                         <img src="media/bedliners1.avif" alt="Truck with Spray-on Bedliner">
@@ -100,7 +106,7 @@
             <h2>Get Your Free Quote</h2>
             <p class="section-description">Ready to transform your vehicle? Fill out the form below and we'll get back to you within 24 hours.</p>
             <form id="contact-form" class="contact-form" action="YOUR_FORM_SUBMISSION_ENDPOINT" method="POST">
-                <div class="form-group">
+                <div class="form-group">    
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
@@ -110,7 +116,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone (Optional):</label>
-                    <input type="tel" id="phone" name="phone">
+                    <input type="tel" id="phone" name="phone" inputmode="numeric" pattern="[0-9]*">
                 </div>
                 <div class="form-group">
                     <label for="service-type">Service of Interest:</label>
@@ -119,6 +125,15 @@
                         <option value="Interior">Interior Customization</option>
                         <option value="Bedliner">Premium Bedliners</option>
                         <option value="Body">Flawless Body Work</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contact-method">Preferred Contact Method:</label>
+                    <select id="contact-method" name="contact-method" required>
+                        <option value="">Select a Method</option>
+                        <option value="Email">Email</option>
+                        <option value="Phone">Phone Call</option>
+                        <option value="Text">Text Message</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -137,7 +152,7 @@
             <div class="footer-content">
                 <div class="footer-info">
                     <h3>OPENING HOURS</h3>
-                    <p>Call for an Appointment 250-580-4312 or 778-430-3333</p>
+                    <p>Call or Text for an Appointment @ <a href="#" class="copy-phone" data-phone="250-580-4312">250-580-4312 <i class="far fa-copy"></i></a> or <a href="#" class="copy-phone" data-phone="778-430-3333">778-430-3333 <i class="far fa-copy"></i></a></p>
                     <p>698 Sumas Street, Victoria, BC</p>
                     <p>Mon - Fri: 9am - 4pm</p>
                     <p>Sat: By Appointment Only</p>
@@ -295,6 +310,28 @@
             document.querySelectorAll('.service-card').forEach(card => {
                 card.classList.add('fade-in-up-init'); // Initial state for animation
                 observer.observe(card);
+            });
+
+            document.querySelectorAll('.copy-phone').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const phone = this.dataset.phone;
+                    navigator.clipboard.writeText(phone).then(() => {
+                        const feedback = document.createElement('span');
+                        feedback.classList.add('copy-feedback');
+                        feedback.textContent = 'Copied!';
+                        this.appendChild(feedback);
+                        setTimeout(() => {
+                            feedback.style.opacity = '1';
+                        }, 10);
+                        setTimeout(() => {
+                            feedback.style.opacity = '0';
+                            setTimeout(() => {
+                                feedback.remove();
+                            }, 300);
+                        }, 2000);
+                    });
+                });
             });
         });
     </script>

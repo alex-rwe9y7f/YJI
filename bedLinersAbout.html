@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Premium spray-on bedliner service in Victoria. Add real value to your vehicle with our durable, UV-stabilized polyurea hybrid coating.">
-  <title>Premium Spray-On Bedliners in Victoria | Yellow Jacket Interiors</title>
+  <meta name="description" content="Yellow Jacket Interiors offers premium spray-on bedliners in Victoria, BC. Our durable, UV-stabilized polyurea hybrid coating provides superior protection and increases vehicle value." />
+  <meta name="keywords" content="spray-on bedliner, truck bed protection, polyurea coating, durable bedliner, UV stabilized bedliner, truck accessories, Yellow Jacket Interiors, Victoria BC">
+  <title>Premium Spray-On Bedliners & Truck Bed Protection | Yellow Jacket Interiors</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
@@ -46,7 +47,7 @@
 
   <div class="container bedliner-container">
     <div class="image-holder bedliner-image-holder">
-      <img src="media/bedliners1.avif" alt="Close-up of a spray-on bedliner texture" class="styled-image">
+      <img src="media/bedliners2.png" alt="Close-up of a spray-on bedliner texture" class="styled-image">
     </div>
 
     <section class="intro">
@@ -127,6 +128,15 @@
                       <option value="08:30">8:30 AM</option>
                       <option value="13:30">1:30 PM</option>
                   </select>
+                  </div>
+                  <div class="form-group">
+                  <label for="boxlength">Select Your Boxlength:</label>
+                  <select id="boxlength" name="boxlength" required>
+                      <option value="">Select a Boxlength</option>
+                      <option value="7ft (Short Box)-----$800 CAD">7ft: $800</option>
+                      <option value="7ft+ (Long Box)----$900 CAD">Longer Than 7ft: $900</option>
+                  </select>
+                  </div>
                   <div id="availability-status" class="availability-status"></div>
               </div>
               <button type="submit" class="btn btn-primary btn-submit">Request Booking</button>
@@ -163,7 +173,7 @@
             <div class="footer-content">
                 <div class="footer-info">
                     <h3>OPENING HOURS</h3>
-                    <p>Call for an Appointment 250-580-4312 or 778-430-3333</p>
+                    <p>Call or Text for an Appointment @ <a href="#" class="copy-phone" data-phone="250-580-4312">250-580-4312 <i class="far fa-copy"></i></a> or <a href="#" class="copy-phone" data-phone="778-430-3333">778-430-3333 <i class="far fa-copy"></i></a></p>
                     <p>698 Sumas Street, Victoria, BC</p>
                     <p>Mon - Fri: 9am - 4pm</p>
                     <p>Sat: By Appointment Only</p>
@@ -180,7 +190,51 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="booking.js"></script>
-    <script>
+    <script>document.querySelectorAll('.copy-phone').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const phone = this.dataset.phone;
+                    navigator.clipboard.writeText(phone).then(() => {
+                        const feedback = document.createElement('span');
+                        feedback.classList.add('copy-feedback');
+                        feedback.textContent = 'Copied!';
+                        this.appendChild(feedback);
+                        setTimeout(() => {
+                            feedback.style.opacity = '1';
+                        }, 10);
+                        setTimeout(() => {
+                            feedback.style.opacity = '0';
+                            setTimeout(() => {
+                                feedback.remove();
+                            }, 300);
+                        }, 2000);
+                    });
+                });
+            });
+        ;</script>
+    <script>document.querySelectorAll('.copy-phone').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const phone = this.dataset.phone;
+                    navigator.clipboard.writeText(phone).then(() => {
+                        const feedback = document.createElement('span');
+                        feedback.classList.add('copy-feedback');
+                        feedback.textContent = 'Copied!';
+                        this.appendChild(feedback);
+                        setTimeout(() => {
+                            feedback.style.opacity = '1';
+                        }, 10);
+                        setTimeout(() => {
+                            feedback.style.opacity = '0';
+                            setTimeout(() => {
+                                feedback.remove();
+                            }, 300);
+                        }, 2000);
+                    });
+                });
+            });
+        ;
+
         document.addEventListener('DOMContentLoaded', () => {
             // Smooth scrolling for navigation links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
