@@ -1,12 +1,15 @@
 # Redirects from old Wix URLs to new site structure
-
 # Main pages
-/index.html                       /index.html                       301
-/bedLinersAbout.html              /bedLinersAbout.html              301
-/gallery.html                     /gallery.html                     301
-/interior-customization.html      /interior-customization.html      301
-/sprayAbout.html                  /sprayAbout.html                  301
-/thank-you.html                   /thank-you.html                   301
+/index.html /index.html 301
+/bedLinersAbout.html /bedLinersAbout.html 301
+/gallery.html /gallery.html 301
+/auto-interior-restorations /interior-customization.html 301
+/protective-coatings-spray-in-truck /bedLinersAbout.html 301
+/sprayAbout.html /sprayAbout.html 301
+/thank-you.html /thank-you.html 301
+/book-online /index.html 301  # Redirect to homepage since no bookings page exists
+/service-page/spray-in-truck-bedliner /bedLinersAbout.html 301  # From old service page
+/truck-bed-liners /bedLinersAbout.html 301  # Potential variation for "Truck Bed Liners" sitelink
 
 # Fallback rule for any other paths
-/* /index.html                       301
+/* /index.html 301
