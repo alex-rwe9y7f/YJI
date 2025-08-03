@@ -1,4 +1,4 @@
+User-agent: *
+Allow: /
 
-User-agent: * applies the rule to all web crawlers.
-
-Disallow: /
+Sitemap: https://yellowjacketinteriors.com/sitemap.xml
